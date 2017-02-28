@@ -34,6 +34,47 @@ gem install sass
 Windows를 사용하는 경우 먼저 [Ruby를 설치](http://rubyinstaller.org/)해야 한다.  
 커멘드 라인에서 Sass를 실행하려면,  
 
-```
+```  
 sass input.scss output.css
+```  
+
+Sass파일이 변경될 때마다 Sass파일을 관찰하고 CSS로 업데이트할 수 있다:  
+
+```  
+sass --watch input.scss:output.css  
+```  
+
+Sass파일이 많은 디렉토리가 있는 경우, 전체 디렉토리를 관찰하도록 지시할 수 있다:  
+
+```  
+sass --watch app/sass:public/stylesheets
+```  
+
+전체문서를 보려면 `sass --help` 를 사용한다.  
+
+루비코드에서 Sass 사용은 매우 간단하다. Sass gem을 설치한 후, `require "sass"`을 실행하고  [Sass::Engine](http://sass-lang.com/documentation/Sass/Engine.html)을 다음과 같이 사용할 수 있다:  
+
+```  
+engine = Sass::Engine.new("#main {background-color: #0000ff}", :syntax => :scss)  
+engine.render #=> "#main { background-color: #0000ff; }\n"  
+```  
+
+### Rack/Rails/Merb Plugin  
+
+Rails 3이전 버전의 Sass in Rails을 사용하려면, `environment.rb`에 다음 줄을 추가한다:  
+
+```  
+config.gem "sass"  
+```  
+
+Rails 3의 경우, 다음 줄을 Gemfile에 추가한다:  
+
 ```
+gem "sass"  
+```  
+
+Merb에서 Sass를 사용하려면 `config/dependencies.rb`에 다음 행을 추가한다:  
+
+```  
+dependency "merb-haml"  
+```  
