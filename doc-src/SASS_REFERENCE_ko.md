@@ -78,3 +78,33 @@ Merb에서 Sass를 사용하려면 `config/dependencies.rb`에 다음 행을 추
 ```  
 dependency "merb-haml"  
 ```  
+Rack어플리케이션에서 Sass를 사용하기 위해선, `config.ru`에 다음 행을 추가한다:  
+
+```
+require 'sass/plugin/rack'  
+use Sass::Plugin::Rack  
+```  
+
+Sass스타일시트는 보는 것과 동일하게 작동하지 않는다. 동적 콘텐츠가 포함되어 있지 않으므로, CSS는 Sass파일이 업데이트 될 때 생성하면 된다. 기본적으로 `.sass` 와 `.scss` 파일은 public/stylesheets/sass에 위치한다.([`:template_location`]()옵션으로 사용자정의를 할 수 있다.) 그 다음에 필요할 때마다 public/stylesheets의 해당 CSS 파일로 컴파일된다. 예를 들어 public/stylesheets/sass/main.scss는 public/stylesheets/main.css로 컴파일된다.  
+
+### Caching  
+기본적으로 Sass는 컴파일 된 템플릿과 [partials]()를 캐시한다(역: 저장한다.). 이렇게하면 Sass 파일의 대량 컬렉션을 재 컴파일하는 속도가 크게 빨라지고 별도의 파일로 분할된 Sass 템플릿이 하나의 큰 파일로 모두 [`@import`]()되면 가장 효과적이다.  
+
+프레임워크가 없으면, Sass는 캐시된(역: 저장된) 템플릿을 `.sass-cache` 디렉토리에 저장한다. Rails와 Merb에서는 `tmp/sass-cache`에 저장된다. 디렉토리는 [`:cache_location`]() 옵션을 사용하여 사용자 정의 할 수 있다. Sass가 캐싱을 전혀 사용하지 않게하려면 [`:cache`]() 옵션을 `false`로 설정한다.  
+
+### Options  
+Rails의 `environment.rb` 또는 Rack의 `config.ru`에서 옵션은 [Sass::Plugin#options](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#options-instance_method)의 해시를 세팅하여 설정할 수 있다...  
+
+```
+Sass::Plugin.options[:style] = :compact  
+```   
+
+...또는 Merb의 `init.rb`에서 `Merb::Plugin.config[:sass]` 해시의 세팅...
+
+```
+Merb::Plugin.config[:sass][:style] = :compact  
+```  
+
+또는 옵션 해시를 [Sass::Engine # initialize](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#options-instance_method)에 전달하면된다. 모든 관련 옵션은 커멘드라인에서 실행가능한 sass 및 scss의 플래그를 통해 사용할 수 있다. 사용가능한 옵션은 다음과 같다:  
+
+{#style-option} `:style`
