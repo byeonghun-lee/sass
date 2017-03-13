@@ -90,7 +90,7 @@ Sass스타일시트는 보는 것과 동일하게 작동하지 않는다. 동적
 ### Caching  
 기본적으로 Sass는 컴파일 된 템플릿과 [partials]()를 캐시한다(역: 저장한다.). 이렇게하면 Sass 파일의 대량 컬렉션을 재 컴파일하는 속도가 크게 빨라지고 별도의 파일로 분할된 Sass 템플릿이 하나의 큰 파일로 모두 [`@import`]()되면 가장 효과적이다.  
 
-프레임워크가 없으면, Sass는 캐시된(역: 저장된) 템플릿을 `.sass-cache` 디렉토리에 저장한다. Rails와 Merb에서는 `tmp/sass-cache`에 저장된다. 디렉토리는 [`:cache_location`]() 옵션을 사용하여 사용자 정의 할 수 있다. Sass가 캐싱을 전혀 사용하지 않게하려면 [`:cache`]() 옵션을 `false`로 설정한다.  
+프레임워크가 없으면, Sass는 캐시된(역: 저장된) 템플릿을 `.sass-cache` 디렉토리에 저장한다. Rails와 Merb에서는 `tmp/sass-cache`에 저장된다. 디렉토리는 [`:cache_location`]() 옵션을 사용하여 사용자 정의 할 수 있다. Sass가 캐싱을 전혀 사용하지 않게하려면 [`:cache`](#cache-option) 옵션을 `false`로 설정한다.  
 
 ### Options  
 Rails의 `environment.rb` 또는 Rack의 `config.ru`에서 옵션은 [Sass::Plugin#options](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#options-instance_method)의 해시를 세팅하여 설정할 수 있다...  
@@ -107,4 +107,32 @@ Merb::Plugin.config[:sass][:style] = :compact
 
 또는 옵션 해시를 [Sass::Engine # initialize](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#options-instance_method)에 전달하면된다. 모든 관련 옵션은 커멘드라인에서 실행가능한 sass 및 scss의 플래그를 통해 사용할 수 있다. 사용가능한 옵션은 다음과 같다:  
 
-{#style-option} `:style`
+{#style-option} `:style`  
+
+CSS 아웃풋의 스타일을 설정한다. [아웃풋 스타일]()참고.
+
+{#syntax-option} `:syntax`  
+
+인풋파일의 구문으로, 들여 쓰기 구문은 : sass, CSS 확장 구문은 : scss 이다. 이는 [Sass::Engine](http://sass-lang.com/documentation/Sass/Engine.html) 인스턴스를 직접 생성 할 때만 유용하다; [Sass::Plugin](http://sass-lang.com/documentation/Sass/Plugin.html)을 사용할 때 자동으로 올바르게 설정됩니다. 기본값은 `:sass`이다.  
+
+{#property_syntax-option} `:property_syntax`  
+
+들여 쓰기된 구문 문서가 속성에 대해 하나의 구문을 사용하도록 한다. 올바른 구문을 사용하지 않으면 오류가 발생한다. `:new`는 속성 이름 다음에 콜론 사용을 강제한다. 예: `color: #0f3` 또는 `width: $main_width`. `:old`는 속성 이름 앞에 콜론 사용을 강제한다. 예: `:color #0f3` 또는 `:width $main_width`. 기본적으로 두 구문 다 유효하다. SCSS 문서에는 아무런 영향을 미치지 않는다.  
+
+{#cache-option} `:cache`  
+
+빠르게, 파싱된 Sass 파일을 캐싱해야하는지 여부. 기본값은 true이다.  
+
+{#read_cache-option} `:read_cache`  
+
+이것이 설정되어 있고 `:cache`가 없다면 Sass 캐시가있는 경우에만 읽기 만하고 Sass 캐시가없는 경우에는 쓰면 안 된다.  
+
+{#cache_store-option} `:cache_store`  
+
+[Sass::CacheStores::Base](http://sass-lang.com/documentation/Sass/CacheStores/Base.html)의 하위 클래스 인스턴스로 설정하면 캐시 저장소가 캐시 된 컴파일 결과를 저장하고 검색하는 데 사용된다. [:cache_location]() 옵션을 사용하여 초기화되는 [Sass::CacheStores::Filesystem](http://sass-lang.com/documentation/Sass/CacheStores/Filesystem.html)이 기본 설정된다.  
+
+{#never_update-option} `:never_update`  
+
+템플릿 파일이 변경 되더라도 CSS 파일은 업데이트되지 않는다. 이 값을 true로 설정하면 성능이 약간 향상 될 수 있다. 항상 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+
+{#always_update-option} `:always_update`  
