@@ -136,3 +136,11 @@ CSS 아웃풋의 스타일을 설정한다. [아웃풋 스타일]()참고.
 템플릿 파일이 변경 되더라도 CSS 파일은 업데이트되지 않는다. 이 값을 true로 설정하면 성능이 약간 향상 될 수 있다. 항상 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
 
 {#always_update-option} `:always_update`  
+
+템플릿이 수정된 경우만 제외하고, 컨트롤러가 엑세스될 때 CSS파일이 항상 업데이트 된다. 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+
+{#always_check-option} `:always_check`  
+
+서버를 시작할 때를 제외하고, 컨트롤러가 엑세스될 때 Sass 템플릿은 엡데이트를 항상 체크한다. Sass 템플릿이 업데이트됐다면 다시 컴파일되고 해당 CSS 파일을 덮어 쓴다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않다면 true이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+
+{#poll-option} `:poll`  
