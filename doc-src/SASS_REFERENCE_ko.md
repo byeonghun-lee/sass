@@ -144,3 +144,11 @@ CSS 아웃풋의 스타일을 설정한다. [아웃풋 스타일]()참고.
 서버를 시작할 때를 제외하고, 컨트롤러가 엑세스될 때 Sass 템플릿은 엡데이트를 항상 체크한다. Sass 템플릿이 업데이트됐다면 다시 컴파일되고 해당 CSS 파일을 덮어 쓴다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않다면 true이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
 
 {#poll-option} `:poll`  
+
+true일 때 네이티브 파일시스템 백엔드보다   [Sass::Plugin::Compiler#watch](http://sass-lang.com/documentation/Sass/Plugin/Compiler.html#watch-instance_method)에 폴링 백엔드를 사용한다.  
+
+{#full_exception-option} `:full_exception`  
+
+Sass코드에 에러가 있거나 없거나 Sass에서 생성 된 CSS 파일에 자세한 설명을 제공해야 한다. true로 설정하면  오류가 CSS 파일의 주석과 페이지 상단(지원되는 브라우저일 경우)에 줄 번호와 소스 코드 조각으로 함께 표시된다. 또 다르게 Ruby코드에서 예외가 발생한다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않으면 true이다.  
+
+{#template_location-option} `:template_location`  
