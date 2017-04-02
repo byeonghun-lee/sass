@@ -121,27 +121,27 @@ CSS 아웃풋의 스타일을 설정한다. [아웃풋 스타일]()참고.
 
 {#cache-option} `:cache`  
 
-빠르게, 파싱된 Sass 파일을 캐싱해야하는지 여부. 기본값은 true이다.  
+ 빠르게, 파싱된 Sass 파일을 캐싱해야하는지 여부. 기본값은 true이다.  
 
 {#read_cache-option} `:read_cache`  
 
-이것이 설정되어 있고 `:cache`가 없다면 Sass 캐시가있는 경우에만 읽기 만하고 Sass 캐시가없는 경우에는 쓰면 안 된다.  
+ 이것이 설정되어 있고 `:cache`가 없다면 Sass 캐시가있는 경우에만 읽기 만하고 Sass 캐시가없는 경우에는 쓰면 안 된다.  
 
 {#cache_store-option} `:cache_store`  
 
-[Sass::CacheStores::Base](http://sass-lang.com/documentation/Sass/CacheStores/Base.html)의 하위 클래스 인스턴스로 설정하면 캐시 저장소가 캐시 된 컴파일 결과를 저장하고 검색하는 데 사용된다. [:cache_location]() 옵션을 사용하여 초기화되는 [Sass::CacheStores::Filesystem](http://sass-lang.com/documentation/Sass/CacheStores/Filesystem.html)이 기본 설정된다.  
+ [Sass::CacheStores::Base](http://sass-lang.com/documentation/Sass/CacheStores/Base.html)의 하위 클래스 인스턴스로 설정하면 캐시 저장소가 캐시 된 컴파일 결과를 저장하고 검색하는 데 사용된다. [:cache_location]() 옵션을 사용하여 초기화되는 [Sass::CacheStores::Filesystem](http://sass-lang.com/documentation/Sass/CacheStores/Filesystem.html)이 기본 설정된다.  
 
 {#never_update-option} `:never_update`  
 
-템플릿 파일이 변경 되더라도 CSS 파일은 업데이트되지 않는다. 이 값을 true로 설정하면 성능이 약간 향상 될 수 있다. 항상 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+ 템플릿 파일이 변경 되더라도 CSS 파일은 업데이트되지 않는다. 이 값을 true로 설정하면 성능이 약간 향상 될 수 있다. 항상 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
 
 {#always_update-option} `:always_update`  
 
-템플릿이 수정된 경우만 제외하고, 컨트롤러가 엑세스될 때 CSS파일이 항상 업데이트 된다. 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+ 템플릿이 수정된 경우만 제외하고, 컨트롤러가 엑세스될 때 CSS파일이 항상 업데이트 된다. 기본값은 false이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
 
 {#always_check-option} `:always_check`  
 
-서버를 시작할 때를 제외하고, 컨트롤러가 엑세스될 때 Sass 템플릿은 엡데이트를 항상 체크한다. Sass 템플릿이 업데이트됐다면 다시 컴파일되고 해당 CSS 파일을 덮어 쓴다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않다면 true이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+ 서버를 시작할 때를 제외하고, 컨트롤러가 엑세스될 때 Sass 템플릿은 엡데이트를 항상 체크한다. Sass 템플릿이 업데이트됐다면 다시 컴파일되고 해당 CSS 파일을 덮어 쓴다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않다면 true이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
 
 {#poll-option} `:poll`  
 
@@ -149,6 +149,62 @@ true일 때 네이티브 파일시스템 백엔드보다   [Sass::Plugin::Compil
 
 {#full_exception-option} `:full_exception`  
 
-Sass코드에 에러가 있거나 없거나 Sass에서 생성 된 CSS 파일에 자세한 설명을 제공해야 한다. true로 설정하면  오류가 CSS 파일의 주석과 페이지 상단(지원되는 브라우저일 경우)에 줄 번호와 소스 코드 조각으로 함께 표시된다. 또 다르게 Ruby코드에서 예외가 발생한다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않으면 true이다.  
+ Sass코드에 에러가 있거나 없거나 Sass에서 생성 된 CSS 파일에 자세한 설명을 제공해야 한다. true로 설정하면  오류가 CSS 파일의 주석과 페이지 상단(지원되는 브라우저일 경우)에 줄 번호와 소스 코드 조각으로 함께 표시된다. 또 다르게 Ruby코드에서 예외가 발생한다. 프로덕션 모드에서는 기본값이 false이고 그렇지 않으면 true이다.  
 
 {#template_location-option} `:template_location`  
+
+ 당신의 어플리케이션에서 root sass 템플릿 디렉토리에 대한 경로. hash인 경우 `:css_location`이 무시되고 이옵션은 input과 output 디렉토리 간의 mapping을 지정한다. 또한 hash 대신 2-element lists의 목록이 제공 될 수 있다. 기본 값은 `css_location + "/sass"`이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다. 여러 개의 템플릿 위치가 지정되면, 모든 템플릿이 import path에 배치되고, 그 사이에 import할 수 있다. **가능한 많은 형식때문에 이 옵션은 오직 직접 설정하거나 액세스또는 수정하지 말아야 한다. [Sass::Plugin#template_location_array](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#template_location_array-instance_method), [Sass::Plugin#add_template_location](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#add_template_location-instance_method)과 [Sass::Plugin#remove_template_location](http://sass-lang.com/documentation/Sass/Plugin/Configuration.html#remove_template_location-instance_method) 메소드를 대신 사용하라**  
+
+ {#css_location-option} `:css_location`  
+
+CSS output을 기록해야하는 경로. `:template_location`이 hash인 경우 이 옵션은 무시된다. 기본 값은 `"./public/stylesheets"`이다. Rack, Ruby on Rails 또는 Merb에서만 의미가 있다.  
+
+{#cache_location-option} `:cache_location`  
+
+캐시된 `sassc`파일을 기록해야하는 경로. 기본값은 Rails와 Merb에선 `"./tmp/sass-cache"` 다른 곳에선 `"./.sass-cache"`이다. [`:cache_store` option]()이 설정되면 무시된다.  
+
+{#unix_newlines-option} `:unix_newlines`  
+
+true인 경우, 파일 작성시 Unix-style newlines을 사용하라. 오직 Windows에서 Sass파일로 작성할 때만 의미 있다.(Rack, Rails또는 Merb에서는 [Sass::Plugin](http://sass-lang.com/documentation/Sass/Plugin.html)을 직접 사용하거나, command-line  executable을 사용할때)  
+
+{#filename-option} `:filename`  
+
+랜더링된 파일의 파일이름. 이것은 오류보고에만 사용되고, Rack, Rails 또는 Merb에서는 자동으로 설정된다.  
+
+{#line-option} `:line`  
+
+Sass 템플릿의 첫번째 줄 번호. 오류가 있는 줄 번호를 보고하는데 사용한다. Sass 템플릿이 Ruby 파일에 내장되어 있는 경우 유용하다.  
+
+{#load_paths-option} `:load_paths`  
+
+Sass 템플릿에 [@import]() directive로 import된 파일 시스템과 importters 경로의 배열. 이들은 문자열, `Pathname`객체 또는 [Sass::Importers::Base](http://sass-lang.com/documentation/Sass/Importers/Base.html)의 하위 클래스 일 수 있다. 기본적으로 작업 디렉토리와 rack, Rails 또는 Merb에서 `:template_location`이다. 로드 경로는 [Sass.load_paths](http://sass-lang.com/documentation/Sass.html#load_paths-class_method) 및 `SASS_PATH` 환경 변수에 의해 알려준다.  
+
+{#filesystem_importer-option} `:filesystem_importer`  
+
+[Sass::Importers::Base](http://sass-lang.com/documentation/Sass/Importers/Base.html)의 하위 클래스는 일반 문자 로드 경로를 처리하는데 사용된다. 파일시스템에서 파일을 import해야 한다. 이것은 단일 문자열 인수(로드 경로)를 사용하는 생성자를 사용하여 [Sass::Importers::Base](http://sass-lang.com/documentation/Sass/Importers/Base.html)에서 상속받은 Class 객체 여야 한다. 기본값은 [Sass::Importers::Filesystem](http://sass-lang.com/documentation/Sass/Importers/Filesystem.html)이다.  
+
+{#sourcemap-option} `:sourcemap`  
+
+어떻게 sourcemaps이 생성되는지 제어한다. 이런 sourcemaps은 브라우저에 각 CSS 스타일을 생성시키는 Sass 스타일을 찾는 방법을 알려준다. 여기 3가지 유효한 값이 있다: **`:auto`** 는 가능한 경우 상대 URIs를 사용하고, 소스 스타일 시트는 사용하는 어떠한 서버에서도 가능하고 상대 위치는 로컬 파일 시스템과 동일하게 가정한다. 상대 URI를 사용할 수없는 경우 "file :"URI가 대신 사용됩니다. **`:file`** 은 로컬에서 작동하는 "file:" URIs로 항상 사용하지만 원격 서버에 배포할 수 없다.  **`:inline`** 은 sourcemap에서 전체 소스 텍스트를 포함한다. 이는 최대한 portable하지만 매우 큰 sourcemap파일을 생성한다. 마지막으로 **`:none`** 은 sourcemap을 전혀 생성하지 않는다.  
+
+{#line_numbers-option} `:line_numbers`  
+
+true로 설정하면 선택자가 정의 된 줄 번호와 파일을 컴파일 된 CSS에 주석으로 표시한다. 디버깅과, 특히 imports와 mixins을 사용할 때 유용하다. 이옵션은 `:line_comments`라고도 한다. `:compressed`  output style 또는 `:debug_info`/`:trace_selectors` 옵션을 사용할 때 자동으로 비활성화 한다.  
+
+{#trace_selectors-option} `:trace_selectors`  
+
+true로 설정하면 각 선택자 앞에 imports와 mixins의 전체 추적을 emit한다. 이것은 imports와 mixin을 포함한 스타일시트의 브라우저 내의 디버깅을 도와주는 데 유용하다. 이 옵션은 `:line_comments` 옵션을 대체하며 `:debug_info` 옵션으로 대체된다. `:compressed` output style을 사용할 때 자동으로 비활성화 된다.  
+
+{#debug_info-option} `:debug_info`  
+
+true로 설정하면 선택자가 정의 된 줄 번호와 파일이 브라우저에서 이해할 수있는 형식으로 컴파일 된 CSS로 내보내진다. Sass 파일 이름과 줄 번호를 표시하기 위해 [the FireSass Firebug extension](https://addons.mozilla.org/en-US/firefox/addon/firesass-for-firebug/) 확장과 함께 사용하면 유용하다.(역: 이젠 없는 것 같다.) `:compressed` output style을 사용할 때 자동으로 비활성화 된다.  
+
+{#custom-option} `:custom`  
+
+custom Sass 기능에서 데이터를 사용할 수 있도록 개별 응용 applications에서 설정할 수있는 옵션.  
+
+{#quiet-option} `:quiet`  
+
+true로 설정하면 경고가 비활성화 된다.  
+
+### Syntax Selection  
