@@ -207,4 +207,73 @@ custom Sass 기능에서 데이터를 사용할 수 있도록 개별 응용 appl
 
 true로 설정하면 경고가 비활성화 된다.  
 
-### Syntax Selection  
+### Syntax Selection(구문 선택)  
+
+Sass command-line tool은 파일 확장명을 사용하여 사용중인 구문을 확인하지만 항상 파일 이름은 아니다. `sass` command-line 프로그램은 기본적으로 들여 쓰기 구문이지만 입력을 SCSS 구문으로 해석해야하는 경우 `--scss` 옵션을 전달할 수 있다. 또는 `sass`프로그램과 똑같은 `scss` command-line 프로그램을 사용할 수 있지만 구문이 SCSS라고 가정하는 것을 기본으로 한다.  
+
+### Encodings  
+
+Ruby 1.9 이상에서 실행될 때 Sass는 문서의 character encoding을 알고 있다. Sass는 [CSS spec](https://www.w3.org/TR/2013/WD-css-syntax-3-20130919/#determine-the-fallback-encoding)을 따라 스타일 시트의 인코딩을 결정하고, Ruby 문자열 인코딩으로 돌아간다. 즉, 유니 코드 바이트 순서 표시를 확인한 다음 `@charset` 선언과 Ruby 문자열 인코딩을 먼저 확인한다. 설정되지 않은 경우 문서는 UTF-8로 간주된다.  
+
+스타일 시트의 인코딩을 명시적으로 지정하려면 CSS와 마찬가지로 `@charset` 선언을 사용한다. `@charset "encoding-name";`을 스타일 시트 시작 부분(공백이나 주석 앞)에 추가하면 Sass가 주어진 인코딩을 해석한다. 사용하는 인코딩에 관계없이 유니 코드로 변환할 수 있어야 한다.  
+
+Sass는 항상 output을 UTF-8로 인코딩한다. output 파일에 비 ASCII 문자가 포함되어있는 경우에만 `@charset` 선언이 포함된다. 압축 모드에서는 `@charset` 선언 대신  UTF-8 byte order mark가 사용됩니다.  
+
+## CSS Extensions(CSS 확장 기능)  
+
+### Nested Rules(중첩 규칙)  
+
+Sass를 사용하면 CSS 규칙을 서로 중첩시킬 수 있다. 내부 규칙은 외부 규칙의 선택자 내에서만 적용된다. 예 :  
+
+```scss  
+#main p {
+  color: #00ff00;
+  width: 97%;
+
+  .redbox {
+    background-color: #ff0000;
+    color: #000000;
+  }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+#main p {
+  color: #00ff00;
+  width: 97%; }
+  #main p .redbox {
+    background-color: #ff0000;
+    color: #000000; }
+```  
+
+이렇게하면 상위 선택자의 반복을 방지하고 중첩된 선택자를 많이 사용하는 복잡한 CSS 레이아웃을 훨씬 단순하게 만든다. 예 :  
+
+```scss  
+#main {
+  width: 97%;
+
+  p, div {
+    font-size: 2em;
+    a { font-weight: bold; }
+  }
+
+  pre { font-size: 3em; }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+#main {
+  width: 97%; }
+  #main p, #main div {
+    font-size: 2em; }
+    #main p a, #main div a {
+      font-weight: bold; }
+  #main pre {
+    font-size: 3em; }
+```  
+
+### Referencing Parent Selectors(부모 선택자 참조): `&` {#parent-selector}  
