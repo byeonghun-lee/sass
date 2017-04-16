@@ -277,3 +277,115 @@ Sass를 사용하면 CSS 규칙을 서로 중첩시킬 수 있다. 내부 규칙
 ```  
 
 ### Referencing Parent Selectors(부모 선택자 참조): `&` {#parent-selector}  
+
+때때로 기본값보다 중첩규칙의 부모선택자를 사용하는 것이 유용하다. 예를 들어, 선택자가 hovered over 되거나 body 요소가 특정 class를 가질 때 특별한 스타일을 원할 수 있다. 이 경우, 부모 선택자에 &문자를 삽입하여 위치를 명시적으로 지정할 수 있다. 예를 들어:  
+
+```scss
+a {
+  font-weight: bold;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+  body.firefox & { font-weight: normal; }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+a {
+  font-weight: bold;
+  text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
+  body.firefox a {
+    font-weight: normal; }
+```  
+
+&는 CSS에 나타나는대로 부모 선택자로 대체된다.  
+
+즉, 당신이 깊은 중첩규칙을 사용한다면, 부모선택자는 &으로 완전히 대체되어 해결된다. 예를 들어:  
+
+```scss  
+#main {
+  color: black;
+  a {
+    font-weight: bold;
+    &:hover { color: red; }
+  }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+#main {
+  color: black; }
+  #main a {
+    font-weight: bold; }
+    #main a:hover {
+      color: red; }
+```  
+
+&는 복합 선택자의 앞부분의 나타나야 하지만 부모 선택자에 추가될 접미사가 뒤에 올 수 있다. 예를 들어:  
+
+```scss  
+#main {
+  color: black;
+  &-sidebar { border: 1px solid; }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css   
+#main {
+  color: black; }
+  #main-sidebar {
+    border: 1px solid; }
+```  
+
+부모 선택자에 접미사를 적용할 수 없을 경우, Sass는 오류를 발생시킨다.  
+
+### Nested Properties(중첩 속성)  
+
+CSS는 “namespaces;”에 있는 많은 속성을 가지고 있다. 예를들어 `font-family`, `font-size`, 와 `font-weight`은 모두 `font`의 namespace이다. CSS에서 동일한 namespace에 다양한 속성을 설정하려면 매번 입력해야한다. Sass는 이처럼 간단한 방법을 제공한다: namespace를 한번 작성한 다음, 각 하위 속성은 중첩한다. 예를 들어:  
+
+```scss  
+.funky {
+  font: {
+    family: fantasy;
+    size: 30em;
+    weight: bold;
+  }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+.funky {
+  font-family: fantasy;
+  font-size: 30em;
+  font-weight: bold; }
+```  
+
+속성 namespace자체도 값을 가질 수 있다. 예를 들어:  
+
+```scss  
+.funky {
+  font: 20px/24px fantasy {
+    weight: bold;
+  }
+}
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+.funky {
+  font: 20px/24px fantasy;
+    font-weight: bold;
+}
+```  
+
+### Placeholder Selectors: `%foo`  
