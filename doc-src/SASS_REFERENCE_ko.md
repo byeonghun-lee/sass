@@ -389,3 +389,50 @@ CSS는 “namespaces;”에 있는 많은 속성을 가지고 있다. 예를들�
 ```  
 
 ### Placeholder Selectors: `%foo`  
+Sass는  "placeholder selector"라는 특수 타입의 선택자를 지원한다. 이것들은 class나 id 선택자처럼 보이지만, # 또는 . 을 제외하고 %로 대체한다. 이들은 [`@extend` directive]()와 함께 사용하기위한 것이다; 자세한 내용은 [`@extend`-Only Selectors]()를 참조한다.  
+
+자체적으로, `@extend`을 사용하지 않고, placeholder선택자를 사용하는 rulesets는 CSS에 렌더링되지 않는다.  
+
+## Comments: `/* */` and `//` {#comments}  
+Sass는 `/* */` 로 표시하는 CSS의 여러줄 주석을 지원하고, // 로 표시하는 한 줄 주석도 지원한다. 가능한 여러줄 주석은 CSS output되지만 한 줄 주석은 제거된다. 예를들어:  
+
+```scss  
+/* 이 주석은  
+ * 여러 줄이다.  
+ * CSS 주석 구문을 사용하기 때문에,  
+ * CSS output에 나타난다. */  
+body { color: black; }
+
+// 이 주석은 각각 한줄로 되어 있다.  
+// CSS output에는 나타나지 않는데,  
+// 한 줄 주석 구문을 사용하기 때문이다..  
+a { color: green; }  
+```  
+
+아래와 같이 컴파일 됨:  
+
+```CSS  
+/* 이 주석은  
+ * 여러 줄이다.  
+ * 이는 CSS의 주석 구문을 사용하기 떄문에,  
+ * CSS output에 나타난다. */  
+ body {  
+  color: black; }  
+ a {
+  color: green; }  
+```  
+
+여러줄 주석의 첫 글자가`!`인 경우, compressed output modes일 지라도 주석은 항상 CSS output으로 렌더링 된다. 생성된 CSS에 저작권 고지를 추가할 때 유용하다. 여러줄 주석은 CSS의 부분으로 되기에, 그 안에 있는 보간법이 해결된다. 예를 들어:  
+
+```scss  
+$version: "1.2.3";  
+/* 이 CSS는 나의 멋진 Framework version #{$version}으로 생성되었다 . */  
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+/*이 CSS는 나의 멋진 Framework 버전 1.2.3으로 생성되었다. */  
+```  
+
+## SassScript  
