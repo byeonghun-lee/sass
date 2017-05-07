@@ -436,3 +436,120 @@ $version: "1.2.3";
 ```  
 
 ## SassScript  
+순수 CSS 속성 구문 외에도 Sass는 SassScript라는 작은 확장 집합을 지원한다. SassScript를 사용하면 속성에서 변수(variables), 연산(arithmetic), 추가기능을 사용할 수 있다. SassScript는 모든 속성 값에서 사용할 수 있다.  
+
+SassScript는 선택자와 속성이름을 생성하는 데에도 사용하는데 이는 [mixins]()를 사용하는데 유용하다. 이는 [보간법(interpolation)]()을 통해 수행된다.  
+
+### Interactive Shell  
+
+interactive shell을 사용하여 SassScript를 쉽게 실험할 수 있다. shell을 시작하려면 `-i` 옵션과 함께 Sass command-line을 실행한다. prompt에서 적법한 SassScript 표현식을 입력하여 평가하고 그 결과를 출력하라:  
+
+```  
+$ sass -i  
+>> "Hello, Sassy World!"  
+"Hello, Sassy World!"  
+>> 1px + 1px + 1px  
+3px  
+>> #777 + #777  
+#eeeeee  
+>> #777 + #888  
+white  
+```  
+
+### 변수(Variables): `$`  
+
+SassScript를 사용하는 가장 똑바른 방법은 변수를 사용하는 것이다. 변수는 달러기호로 시작하며 CSS속성처럼 설정된다.  
+
+```scss  
+$width: 5em;  
+```  
+
+그런 다음 속성에서 참조할 수 있다.  
+
+```scss  
+#main {
+  width: $width;
+}
+```  
+
+변수는 정의되고 중첩된 선택자 수준에서만 사용가능하다. 만약 중첩된 선택자 외부에 정의되어있으면, 그들은 어디에나 사용사능하다. 또한 `!global` flag로 정의할 수 있는데 이 경우도 어디에서나 사용할 수 있다. 예를 들어:  
+
+```scss  
+#main {  
+  $width: 5em !global;  
+  width: $width;  
+}  
+
+#sidebar {  
+  width: $width;  
+}  
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+#main {  
+  width: 5em;  
+}  
+
+#sidebar {  
+  width: 5em;  
+}  
+```  
+
+역사적인 이유로, 변수이름(과 다른 모든 Sass identifiers)은 하이픈과 밑줄을 교체하여 사용할 수 있다. 예를 들어 `$main-width`라는 변수를 정의했다면, `$main_width`로 액세스할 수있고 반대도 가능하다.  
+
+### Data Types  
+
+SassScript는 7가지 주요 데이터 유형을 지원한다:
+```  
+- 숫자(예: 1.2, 13, 10px)  
+- 따옴표 유무에 관계없이 텍스트 문자열 (예: "foo", 'bar', baz)  
+- 색(예: blue, #04a3f9, rgba(255, 0, 0, 0.5))  
+- 불린값(booleans)(예: true, false)  
+- nulls (예: null)  
+- 공백 또는 쉼표로 구분된 값 목록(예: 1.5em 1em 0 2em, Helvetica, Arial, sans-serif)  
+- 하나의 값에서 다른 값까지의 maps(예: (key1: value1, key2: value2))  
+```  
+
+SassScript는 유니코드범위와 `!important`선언과 같은 다른 모든 유형의 CSS속성 값을 지원한다. 하지만, 이러한 유형에 특별한 처리는 없다. 그들은 인용되지 않은 문자열처럼 간주된다.  
+
+#### Strings {#sass-script-strings}  
+
+CSS는 두가지 종류의 문자열을 명시한다: `"Lucida Grande"` 또는 `'http://sass-lang.com'`같이 따옴표가 있는 것, `sans-serif` 또는 `bold`처럼 따옴표가 없는것. SassScript는 두 종류 모두를 인식하며 일반적으로 한 종류의 문자열이 Sass문서에서 사용되면 해당 종류의 문자열이 CSS결과로 사용된다.  
+
+예외가 하나 있는데, [#{} 보간법(interpolation)]()을 사용할 때 따옴표로 묶인 문자열은 인용되지 않는다. 이것은 [mixins]()의 선택자 이름과 같은 것을 사용하기 쉽게 해준다. 예를 들어:  
+
+```scss  
+@mixin firefox-message($selector) {  
+  body.firefox #{$selector}:before {  
+    content: "Hi, Firefox users!";  
+  }  
+}  
+
+@include firefox-message(".header");  
+```  
+
+아래와 같이 컴파일 됨:  
+
+```css  
+body.firefox .header:before {  
+  content: "Hi, Firefox users!"; }  
+```  
+
+#### Lists  
+
+Lists는 Sass가 `margin: 10px 15px 0 0` 또는 `font-face: Helvetica, Arial, sans-serif`같은 CSS 선언 값을 나타내는 방법이다. Lists는 공백이나 쉼로 구분된 일련의 다른 값이다. 실제로 개별 값은 lists로 간주되고,  또한 하나의 item으로된 lists이다.  
+
+자체적으로, lists는 별로 하는게 없지만, [SassScript list functions](http://sass-lang.com/documentation/Sass/Script/Functions.html#list-functions)은 유용하다. [ nth function](http://sass-lang.com/documentation/Sass/Script/Functions.html#nth-instance_method)는 list의 items에 액세스할 수 있으며, [join function](http://sass-lang.com/documentation/Sass/Script/Functions.html#join-instance_method)은 여러 lists를 함께 결합할 수 있으며, [ append function](http://sass-lang.com/documentation/Sass/Script/Functions.html#append-instance_method)은 lists에 items를 추가할 수 있다. [ @each directive]()는 list의 각 item에 스타일을 추가 할 수도 있다.  
+
+단순 값을 포함하는 것 외에도, lists는 다른 lists를 포함할 수 있다. 예를 들어, `1px 2px, 5px 6px`은 `1px 2px` 과 `5px 6px` 두가지 item list가 포함된 것이다.  inner lists가 outer lists와 같은 separator를 가지고 있다면,  inner lists의 시작과 멈춤을 표시하기 위해 괄호를 사용해야 한다. 예를 들어, `(1px 2px) (5px 6px)`는 `1px 2px`와 `5px 6px` 두 가지 lists를 포함하고 있다. 차이점은  outer list은 쉼표로 구분되기 전에 공백으로 구분된다는 점이다.  
+
+lists가 plain CSS로 바뀌면, CSS는 이를 이해하지 못하기 때문에 Sass는 괄호를 추가하지 않는다. 즉, `(1px 2px) (5px 6px)` 및 `1px 2px 5px 6px`는 CSS가 될 때 동일하게 보인다. 그러나 Sass일 때는 동일하지 않다: 첫 번째는 2개의 lists를 포함하는 list이고, 두번째는 4개의 숫자를 포함하는 list이다.  
+
+listsdpsms items가 전혀 없을 수도 있다. 이러한 lists는 ()로 표시된다(이것은 빈 [map]()이기도 하다). 이들은 CSS로 직접 output할 수 없다; 예를들어 `font-family: ()`는, Sass는 오류를 발생시킨다. lists에 `1px 2px () 3px` 또는 `1px 2px null 3px`과 같이 빈 lists나 null값이 포함되어 있으면 빈 lists와 null 값은 그들을 포함한 list에서 CSS로 바뀌기 전에 값이 제거된다.  
+
+쉼표로 구분된 lists 뒤에 쉼표가 있을 수도 있다. 이는 single-element list를 나타낼 수 있기 떄문에 특히 유용하다. 예를 들어, `(1,)`은 `1`을 포함하는 list이고, `(1 2 3,)` 은 1,2,3이 공백으로 구분된 list를 포함하고 쉼표로 구분된 list이다.  
+
+#### Maps  
+ 
