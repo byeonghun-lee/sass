@@ -552,4 +552,23 @@ listsdpsms items가 전혀 없을 수도 있다. 이러한 lists는 ()로 표시
 쉼표로 구분된 lists 뒤에 쉼표가 있을 수도 있다. 이는 single-element list를 나타낼 수 있기 떄문에 특히 유용하다. 예를 들어, `(1,)`은 `1`을 포함하는 list이고, `(1 2 3,)` 은 1,2,3이 공백으로 구분된 list를 포함하고 쉼표로 구분된 list이다.  
 
 #### Maps  
- 
+
+Maps는 keys가 values를 찾을 때, keys와 values 사이의 연결을 나타낸다. 그들은 명명된 그룹들로 values을 선택하고 그룹들에 동적으로 액세스할 수 있게 한다. 문법적으로 미디어 쿼리 표현식과 비슷하지만 CSS에는 직접적인 병렬 관계는 없다.  
+
+```  
+$map: (key1: value1, key2: value2, key3: value3);  
+```  
+
+lists와 달리 maps는 항상 괄호로 묶어야하며 쉼표로 구분해야 된다. maps의 keys와 values는 모든 SassScript 객체가 될 수 있다. map에서 지정된 key는 연관된 하나의 value만 가질 수 있다(해당 value가 lists일 수 있음). 그러나 주어진 value는 많은 keys와 연관될 수 있다.  
+
+lists와 같이, maps는 대부분 [SassScript functions](http://sass-lang.com/documentation/Sass/Script/Functions.html#map-functions)을 사용하여 조작된다. `map-get` 함수는 map에서 values를 조회하고 `map-merge`함수는 map에 values를 추가한다. [@each directive ]()를 사용하여 map에 각 한쌍의 key/value을 추가할 수 있다. map의 한 쌍의 순서는 map이 만들어질 때와 같다.  
+
+maps는 어느 lists에나 사용할 수 있다. list 함수에 의해 사용될 때, map은 한 쌍의 lists로 처리된다. 예를 들어, `(key1: value1, key2: value2)`는 lists함수에 의해 중첩된 list `key1 value1, key2 value2`로 처리된다. lists는 빈 list를 제외하고 maps로 처리할 수 없다. ()는 key/value 쌍이 없는 map과 요소가 없는 list 모두 나타낸다.  
+
+map keys는 모든 Sass 데이터 유형(다른 map까지도)이 될 수 있고 map을 선언하는 구문은 key를 결정하기 위해 평가되는 임의의 SassScript 표현식을 허용한다.  
+
+maps는 순수 CSS로 변환할 수 없다. CSS 함수에 변수또는 인수의 값으로 하나를 사용하면 오류가 발생한다. `inspect($value)`함수를 사용하여 maps  디버깅에 유용한 output 문자열을 생성한다.  
+
+#### Colors  
+
+모든 CSS 색상 표현식은 SassScript 색상 값을 반환한다. 여기에는 따옴표로 묶지 않은 문자열과 구별할 수 없는 [많은 수의 명명된 색상](https://github.com/sass/sass/blob/stable/lib/sass/script/value/color.rb#L28-L180)이 포함된다.
